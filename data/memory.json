@@ -1,0 +1,17 @@
+{
+    "music_history": {
+        "some sad music": 1,
+        "believer": 2
+    },
+    "last_song": "believer",
+    "song_queue": [
+        "some sad music",
+        "some sad music",
+        "believer",
+        "believer",
+        "believer"
+    ],
+    "current_index": 4,
+    "last_action": "play_music",
+    "last_data": "believer"
+}
