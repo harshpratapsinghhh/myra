@@ -1,17 +1,7 @@
-import os
+from youtubesearchpython import VideosSearch
+import webbrowser
 import pyautogui
 import time
-import webbrowser
-import pywhatkit
-
-# Extendable
-# Later we can plug:
-# Spotify API
-# Offline ML recommendations
-# Playlist system
-
-music_folder = "D:\\music" # Offline music folder
-
 
 # SYSTEM MEDIA CONTROL
 
@@ -30,9 +20,11 @@ def previous_track():
 def play_music(speak, song_name=""):
     try:
         if song_name:
-            speak(f"Playing {song_name} on YouTube")
+            # speak(f"Playing {song_name}") -- this was repeating two times.
+            time.sleep(1)
 
-            # Directly plays first YouTube result
+            # PRIMARY METHOD (most reliable)
+            import pywhatkit
             pywhatkit.playonyt(song_name)
 
         else:
@@ -40,7 +32,24 @@ def play_music(speak, song_name=""):
             play_pause()
 
     except Exception as e:
-        speak("Error playing music")
+        print(f"[MUSIC ERROR]: {e}")
+
+        speak("Trying alternative method")
+
+        try:
+            # FALLBACK METHOD
+            from youtubesearchpython import VideosSearch
+            import webbrowser
+
+            videosSearch = VideosSearch(song_name, limit=1)
+            result = videosSearch.result()
+
+            video_url = result["result"][0]["link"]
+            webbrowser.open(video_url)
+
+        except Exception as e:
+            print(f"[FALLBACK ERROR]: {e}")
+            speak("I couldn't play that song.")
 
 
 def pause_music(speak):
@@ -61,7 +70,3 @@ def next_music(speak):
 def previous_music(speak):
     speak("Playing previous track")
     previous_track()
-
-# Later upgrade (we WILL do):
-# Direct YouTube video open -- done 
-# Or API-based playback
