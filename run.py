@@ -16,6 +16,7 @@ def text_mode():
 
         process(command)
 
-
 if __name__ == "__main__":
     text_mode()
+
+# play music udte teer jamaiya ke
