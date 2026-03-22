@@ -27,6 +27,8 @@ from core.memory_engine import (
     learn_user_preference,
     log_activity
  )
+from actions.music_player import pause_music
+import datetime
 
 
 # FALLBACK SYSTEM
@@ -48,6 +50,21 @@ def fallback(command):
 
 # MAIN PROCESSOR
 def process(command):
+
+    # AUTO INTERRUPT MUSIC
+    music_commands = [
+        "play music",
+        "pause music",
+        "resume music",
+        "next song",
+        "previous song"
+    ]
+
+    should_pause = not any(cmd in command for cmd in music_commands)
+
+    if should_pause:
+        pause_music_action()
+        time.sleep(0.5)
 
     habit = detect_habit()
 
@@ -294,11 +311,13 @@ def process(command):
         else:
             speak("I don't know your favorite yet.")
 
-
     elif action == "pause_music":
         pause_music_action()
         remember_context("pause_music")
 
+    elif action == "time":
+        now = datetime.datetime.now().strftime("%I:%M %p")
+        speak(f"The time is {now}")
 
     elif action == "resume_music":
         resume_music_action()

@@ -10,7 +10,8 @@ INTENTS = {
     "previous_music": ["previous song", "go back song"],
     "favorite_music": ["play my favorite song", "play my favourite", "my favorite song","play my favorite"],
     "open_app": ["open", "launch", "start"],
-    "search": ["search", "find", "look up"]
+    "search": ["search", "find", "look up"],
+    "get_time": ["what time is it", "tell me the time", "current time", "time now", "time"]
 }
 
 
@@ -105,7 +106,9 @@ def extract_data(intent, command):
 
     elif intent == "favorite_music":
         return {"action": "favorite_music"}
-
+    
+    elif intent == "get_time":
+        return {"action": "time"}
 
     else:
         return {"action": intent}
