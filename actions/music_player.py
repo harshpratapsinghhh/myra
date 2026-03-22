@@ -17,15 +17,23 @@ def previous_track():
 
 # MAIN MUSIC CONTROLLER
 
+import threading
+import time
+import pywhatkit
+
+
 def play_music(speak, song_name=""):
+
+    def play_task():
+        try:
+            pywhatkit.playonyt(song_name)
+        except Exception as e:
+            print(f"[MUSIC ERROR]: {e}")
+
     try:
         if song_name:
-            # speak(f"Playing {song_name}") -- this was repeating two times.
-            time.sleep(1)
-
-            # PRIMARY METHOD (most reliable)
-            import pywhatkit
-            pywhatkit.playonyt(song_name)
+            # Run in background thread (NON-BLOCKING)
+            threading.Thread(target=play_task, daemon=True).start()
 
         else:
             speak("Resuming music")
@@ -52,9 +60,13 @@ def play_music(speak, song_name=""):
             speak("I couldn't play that song.")
 
 
-def pause_music(speak):
-    speak("Pausing music")
-    play_pause()
+def pause_music(speak=None):
+    import pyautogui
+    import time
+
+    pyautogui.press("playpause")
+    time.sleep(0.3)
+    pyautogui.press("playpause")  # second press ensures pause
 
 
 def resume_music(speak):
