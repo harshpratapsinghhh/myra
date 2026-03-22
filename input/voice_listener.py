@@ -6,7 +6,7 @@ def listen():
     with sr.Microphone() as source:
         print("Listening...")
         r.adjust_for_ambient_noise(source, duration=0.5)
-        audio = r.listen(source, timeout=5, phrase_time_limit=5)
+        audio = r.listen(source, timeout=3, phrase_time_limit=3)
 
     try:
         command = r.recognize_google(audio)
