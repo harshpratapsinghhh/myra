@@ -2,6 +2,7 @@ from youtubesearchpython import VideosSearch
 import webbrowser
 import pyautogui
 import time
+from core.memory_engine import set_music_state
 
 # SYSTEM MEDIA CONTROL
 
@@ -22,21 +23,22 @@ import time
 import pywhatkit
 
 
+from core.memory_engine import set_music_state
+import threading
+import pywhatkit
+
 def play_music(speak, song_name=""):
 
     def play_task():
         try:
             pywhatkit.playonyt(song_name)
+            set_music_state(True)   # 🔥 mark playing
         except Exception as e:
             print(f"[MUSIC ERROR]: {e}")
-
     try:
         if song_name:
-            # Run in background thread (NON-BLOCKING)
             threading.Thread(target=play_task, daemon=True).start()
-
         else:
-            speak("Resuming music")
             play_pause()
 
     except Exception as e:
@@ -61,17 +63,15 @@ def play_music(speak, song_name=""):
 
 
 def pause_music(speak=None):
-    import pyautogui
-    import time
-
     pyautogui.press("playpause")
     time.sleep(0.3)
-    pyautogui.press("playpause")  # second press ensures pause
+    pyautogui.press("playpause")
 
+    set_music_state(False)   # 🔥 mark paused
 
-def resume_music(speak):
-    speak("Resuming music")
-    play_pause()
+def resume_music(speak=None):
+    pyautogui.press("playpause")
+    set_music_state(True)
 
 
 def next_music(speak):
