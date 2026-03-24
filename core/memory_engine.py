@@ -159,3 +159,14 @@ def log_activity(action):
 
     memory["activity_log"] = logs
     save_history(memory)
+
+# About music states that what is going in background
+def set_music_state(state):
+    memory = load_memory()
+    memory["is_music_playing"] = state
+    save_memory(memory)
+
+
+def is_music_playing():
+    memory = load_memory()
+    return memory.get("is_music_playing", False)

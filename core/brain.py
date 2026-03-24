@@ -29,6 +29,7 @@ from core.memory_engine import (
  )
 from actions.music_player import pause_music
 import datetime
+from core.memory_engine import is_music_playing
 
 
 # FALLBACK SYSTEM
@@ -53,16 +54,16 @@ def process(command):
 
     # AUTO INTERRUPT MUSIC
     music_commands = [
-        "play music",
-        "pause music",
-        "resume music",
-        "next song",
-        "previous song"
+    "play music",
+    "pause music",
+    "resume music",
+    "next song",
+    "previous song"
     ]
 
     should_pause = not any(cmd in command for cmd in music_commands)
 
-    if should_pause:
+    if should_pause and is_music_playing():
         pause_music_action()
         time.sleep(0.5)
 
@@ -257,6 +258,7 @@ def process(command):
     elif action == "play_music":
 
         log_activity("play_music")
+        print("[MUSIC STATE AFTER PLAY]:", is_music_playing())
 
         if data:
             speak(f"Playing {data}")
@@ -336,3 +338,10 @@ def process(command):
 
     else:
         fallback(command)
+
+    if should_pause and is_music_playing() == False:
+        time.sleep(1)
+        resume_music_action()
+        print("[MUSIC STATE AFTER PAUSE]:", is_music_playing())
+
+    
