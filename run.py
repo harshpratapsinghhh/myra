@@ -27,5 +27,5 @@ if __name__ == "__main__":
     text_mode()
 
 # play music udte teer jamaiya ke
-# What MYRA is thinking right now -- memory.json
-# What MYRA has learned over time -- history.json
+# What MYRA is thinking right now --> memory.json
+# What MYRA has learned over time --> history.json
