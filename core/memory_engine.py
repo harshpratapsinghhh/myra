@@ -170,3 +170,15 @@ def set_music_state(state):
 def is_music_playing():
     memory = load_memory()
     return memory.get("is_music_playing", False)
+
+# STORES LAST SONG + ARTIST
+
+def set_last_song(song):
+    memory = load_memory()
+    memory["last_song"] = song
+    save_memory(memory)
+
+
+def get_last_song():
+    memory = load_memory()
+    return memory.get("last_song", "")

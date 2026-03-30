@@ -11,7 +11,8 @@ INTENTS = {
     "favorite_music": ["play my favorite song", "play my favourite", "my favorite song","play my favorite"],
     "open_app": ["open", "launch", "start"],
     "search": ["search", "find", "look up"],
-    "get_time": ["what time is it", "tell me the time", "current time", "time now", "time"]
+    "get_time": ["what time is it", "tell me the time", "current time", "time now", "time"],
+    "similar_music": ["play something similar","play similar songs","same type music","like this song"]
 }
 
 

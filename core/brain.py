@@ -25,11 +25,13 @@ from core.memory_engine import (
     update_song_queue, get_previous_song, get_next_song,
     save_memory,
     learn_user_preference,
-    log_activity
+    log_activity,
+    set_last_song,
+    is_music_playing,
+    get_last_song
  )
 from actions.music_player import pause_music
 import datetime
-from core.memory_engine import is_music_playing
 
 
 # FALLBACK SYSTEM
@@ -222,9 +224,17 @@ def process(command):
             speak("No next song found")
         return
 
+    # CONTINUE CONTEXT (HIGH PRIORITY)
+    if command.strip() in ["continue", "continue that", "resume that"]:
+        last_song = get_last_song()
+
+        if last_song:
+            speak(f"Continuing {last_song}")
+            resume_music_action()
+            return
 
     # STEP 2: NORMAL INTENT FLOW
-
+    
     intent = detect_intent(command)
 
     if not intent:
@@ -258,18 +268,22 @@ def process(command):
     elif action == "play_music":
 
         log_activity("play_music")
-        print("[MUSIC STATE AFTER PLAY]:", is_music_playing())
 
         if data:
             speak(f"Playing {data}")
             time.sleep(2)
 
-            # LEARNING + MEMORY PIPELINE
+         # LEARNING + MEMORY PIPELINE
             update_music_history(data)
             update_song_queue(data)
             learn_user_preference(data)
+
+            set_last_song(data)   # 🔥 ADD HERE
+
             play_music_action(data)
             remember_context("play_music", data)
+
+            print("[MUSIC STATE AFTER PLAY]:", is_music_playing())
 
         else:
             last_song = recall("last_song")
@@ -335,6 +349,18 @@ def process(command):
         previous_music_action()
         remember_context("previous_music")
 
+    elif action == "similar_music":
+        last_song = get_last_song()
+
+        if last_song:
+            speak(f"Playing songs similar to {last_song}")
+            time.sleep(2)
+
+            play_music_action(last_song + " similar songs")
+            remember_context("play_music", last_song)
+
+        else:
+            speak("I don't know what to base it on yet.")
 
     else:
         fallback(command)
