@@ -1,0 +1,143 @@
+{
+    "activity_log": [
+        {
+            "action": "play_music",
+            "hour": "04"
+        },
+        {
+            "action": "play_music",
+            "hour": "04"
+        },
+        {
+            "action": "play_music",
+            "hour": "04"
+        },
+        {
+            "action": "play_music",
+            "hour": "04"
+        },
+        {
+            "action": "play_music",
+            "hour": "12"
+        },
+        {
+            "action": "play_music",
+            "hour": "12"
+        },
+        {
+            "action": "play_music",
+            "hour": "12"
+        },
+        {
+            "action": "play_music",
+            "hour": "00"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "02"
+        },
+        {
+            "action": "play_music",
+            "hour": "23"
+        },
+        {
+            "action": "play_music",
+            "hour": "09"
+        },
+        {
+            "action": "play_music",
+            "hour": "09"
+        },
+        {
+            "action": "play_music",
+            "hour": "09"
+        },
+        {
+            "action": "play_music",
+            "hour": "01"
+        },
+        {
+            "action": "play_music",
+            "hour": "02"
+        },
+        {
+            "action": "play_music",
+            "hour": "02"
+        },
+        {
+            "action": "play_music",
+            "hour": "02"
+        },
+        {
+            "action": "play_music",
+            "hour": "02"
+        }
+    ],
+    "music_history": {
+        "some sad music": 1,
+        "believer": 2,
+        "beliver": 1,
+        "some happy": 1,
+        "arijit s": 1,
+        "patola": 1,
+        "haryanvi music": 1,
+        "udte teer jamaiya ke": 2,
+        "bhid mat": 17,
+        "keshriya": 5,
+        "bid": 1,
+        "boyfriend": 1,
+        "keshariya": 2,
+        "kesariya": 5,
+        "motivational songs": 2,
+        "i am happy": 1
+    },
+    "user_preferences": {
+        "favorite_artist": "arijit singh",
+        "favorite_type": ""
+    },
+    "last_song": "kesariya"
+}
