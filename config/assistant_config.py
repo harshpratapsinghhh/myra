@@ -5,7 +5,7 @@ WAKE_WORDS = [
     "myra",
     "wake up myra",
     "hey mayara",
-    "hey myara",
+    "hey mayara",
     "he mayara",
     "he may"
 ]
@@ -22,3 +22,6 @@ EXIT_WORDS = [
 ]
 
 VOICE_TONE = "professional"   # or "casual"
+
+# ADD THIS LINE (THIS WAS MISSING)
+PERSONALITY_MODE = "friendly"   # friendly / professional / desi
