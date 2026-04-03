@@ -28,10 +28,13 @@ from core.memory_engine import (
     log_activity,
     set_last_song,
     is_music_playing,
-    get_last_song
+    get_last_song,
+    get_dominant_mood,
+    update_mood_history
  )
 from actions.music_player import pause_music
 import datetime
+from core.personality_engine import respond
 
 
 # FALLBACK SYSTEM
@@ -167,6 +170,7 @@ def process(command):
     mood = detect_mood(command)
 
     if mood:
+        update_mood_history(mood)
         suggest_action(mood)
         return
     
@@ -229,8 +233,12 @@ def process(command):
         last_song = get_last_song()
 
         if last_song:
-            speak(f"Continuing {last_song}")
-            resume_music_action()
+            if not is_music_playing():
+                speak(f"Continuing {last_song}")
+                resume_music_action()
+            else:
+                speak("Music is already playing")
+
             return
 
     # STEP 2: NORMAL INTENT FLOW
@@ -268,17 +276,17 @@ def process(command):
     elif action == "play_music":
 
         log_activity("play_music")
+        dominant_mood = get_dominant_mood()
 
         if data:
-            speak(f"Playing {data}")
+            speak(respond("play_music", data, command, dominant_mood))
             time.sleep(2)
 
-         # LEARNING + MEMORY PIPELINE
+            # LEARNING + MEMORY PIPELINE
             update_music_history(data)
             update_song_queue(data)
             learn_user_preference(data)
-
-            set_last_song(data)   # 🔥 ADD HERE
+            set_last_song(data)
 
             play_music_action(data)
             remember_context("play_music", data)
@@ -286,24 +294,40 @@ def process(command):
             print("[MUSIC STATE AFTER PLAY]:", is_music_playing())
 
         else:
-            last_song = recall("last_song")
+            # PRIORITY 1: MOOD BASED
+            if dominant_mood == "sad":
+                speak("Playing something uplifting")
+                song = "motivational songs"
 
-            if last_song:
-                speak(f"Playing your last song {last_song}")
+            elif dominant_mood == "sleepy":
+                speak("Playing something calm")
+                song = "calm relaxing music"
+
+            else:
+                song = None
+
+            # PRIORITY 2: LAST SONG
+            if not song:
+                last_song = recall("last_song")
+
+                if last_song:
+                    speak(f"Playing your last song {last_song}")
+                    song = last_song
+
+            # FINAL EXECUTION
+            if song:
                 time.sleep(2)
 
-                # KEEP SYSTEM CONSISTENT
-                update_music_history(last_song)
-                update_song_queue(last_song)
-                learn_user_preference(last_song)
+                update_music_history(song)
+                update_song_queue(song)
+                learn_user_preference(song)
+                set_last_song(song)
 
-                play_music_action(last_song)
-
-                remember_context("play_music", last_song)
+                play_music_action(song)
+                remember_context("play_music", song)
 
             else:
                 speak("What would you like to hear?")
-
 
     elif action == "favorite_music":
         memory = load_memory()
@@ -333,6 +357,7 @@ def process(command):
 
     elif action == "time":
         now = datetime.datetime.now().strftime("%I:%M %p")
+        speak(respond("time"))
         speak(f"The time is {now}")
 
     elif action == "resume_music":

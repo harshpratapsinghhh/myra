@@ -2,6 +2,7 @@ import json
 import os
 import datetime
 import json
+import time
 
 HISTORY_FILE = "data/history.json"
 
@@ -178,7 +179,46 @@ def set_last_song(song):
     memory["last_song"] = song
     save_memory(memory)
 
-
 def get_last_song():
     memory = load_memory()
     return memory.get("last_song", "")
+
+
+# Use to update user memory
+def update_mood_history(mood):
+    memory = load_memory()
+
+    if "mood_history" not in memory:
+        memory["mood_history"] = {}
+
+    history = memory["mood_history"]
+
+    history[mood] = history.get(mood, 0) + 1
+
+    save_memory(memory)
+
+
+def get_dominant_mood():
+    memory = load_memory()
+    history = memory.get("mood_history", {})
+
+    if not history:
+        return None
+
+    return max(history, key=history.get)
+
+def log_activity(action):
+    memory = load_memory()
+
+    memory["last_activity"] = action
+    memory["last_activity_time"] = time.time()
+
+    save_memory(memory)
+
+
+def get_last_activity():
+    memory = load_memory()
+    return (
+        memory.get("last_activity"),
+        memory.get("last_activity_time")
+    )
