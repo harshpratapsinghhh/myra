@@ -4,8 +4,9 @@ from input.wake_word import wait_for_wake_word
 from output.speaker import speak
 from core.brain import process
 from config.assistant_config import SLEEP_WORDS, EXIT_WORDS
-from run import text_mode
-from actions.music_actions import pause_music_action  
+from actions.music_actions import pause_music_action
+from core.prediction_engine import check_prediction
+from actions.music_actions import pause_music_action, is_music_playing
 
 def main():
     speak("System initialized. Say my name to activate.")
@@ -25,8 +26,11 @@ def main():
                 fail_count += 1
                 print(f"[INFO] No input detected ({fail_count})")
 
+                check_prediction()
+
                 if fail_count >= 3:
                     speak("Switching to text mode temporarily.")
+                    from run import text_mode
                     text_mode()
                     fail_count = 0
                     speak("Returning to voice mode.")
@@ -36,8 +40,9 @@ def main():
 
              # HOTWORD INTERRUPT
              
-            if command.strip() in ["myra", "hey myra"]:
-                pause_music_action()  
+            if any(word in command for word in ["myra","mayara"]):
+                if is_music_playing():
+                    pause_music_action() 
                 speak("Yes?")
                 continue
 
