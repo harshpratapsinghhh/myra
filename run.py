@@ -1,6 +1,9 @@
 from core.brain import process
 from output.speaker import speak
 from actions.music_actions import pause_music_action
+from core.prediction_engine import check_prediction
+from actions.music_actions import is_music_playing
+
 
 def text_mode():
     speak("Text mode activated.")
@@ -8,20 +11,26 @@ def text_mode():
     while True:
         command = input("You: ").lower().strip()
 
+        # IDLE PREDICTION
+        if not command:
+            check_prediction()
+            continue
+
         # HOTWORD INTERRUPT
-        if command.strip() in ["myra", "hey myra"]:
-            pause_music_action()  
+        if "myra" in command:
+            if is_music_playing():
+                pause_music_action()
             speak("Yes?")
             continue
 
-        if not command:
-            continue
-
+        # EXIT TEXT MODE
         if command in ["exit", "quit", "bye"]:
             speak("Shutting down text mode.")
             break
 
+        # PROCESS COMMAND
         process(command)
+
 
 if __name__ == "__main__":
     text_mode()
